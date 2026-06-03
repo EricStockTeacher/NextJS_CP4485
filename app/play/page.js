@@ -1,11 +1,12 @@
 "use client"
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useReducer} from 'react'
+import GameButton from "@/app/components/gameButton.js"
 
 export default function Play() {
   const [ compMove, setCompMove ] = useState("")
   const [ result, setResult] = useState("")
   const [dogImage, setDogImage] = useState("");
-  const [dogCount, setDogCount] = useState(0);
+  const [dogCount, setDogCount] = useReducer((dogCount) => dogCount + 1, 0);
 
 
 
@@ -54,18 +55,9 @@ useEffect(() => {
     <div className="flex flex-col items-center gap-8 w-full">
         <h2 className="text-2xl font-bold text-center">Welcome to the Rock Paper Scissors Game page, get ready to play</h2>
         <div className="flex flex-wrap justify-center gap-4">
-            <button
-                onClick={ () => getResult("rock") }
-                className="px-6 py-3 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-colors w-32"
-            >✊ Rock</button>
-            <button
-                onClick={ () => getResult("paper") }
-                className="px-6 py-3 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-semibold rounded-xl shadow-md transition-colors w-32"
-            >🖐 Paper</button>
-            <button
-                onClick={ () => getResult("scissors") }
-                className="px-6 py-3 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-semibold rounded-xl shadow-md transition-colors w-32"
-            >✌ Scissors</button>
+            <GameButton getResult = {getResult} move={"rock"}></GameButton>
+            <GameButton getResult = {getResult} move={"paper"} ></GameButton>
+            <GameButton getResult = {getResult} move={"scissors"} ></GameButton>
         </div>
         {dogImage && (
             <img src={dogImage} />
@@ -77,9 +69,10 @@ useEffect(() => {
             </div>
         )}
        <button
-                onClick={ () => setDogCount(dogCount + 1)}
+                onClick={ () => setDogCount()}
                 className="px-6 py-3 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-semibold rounded-xl shadow-md transition-colors w-32"
     >Update Dog</button>
+    <h2>The dog count is {dogCount} </h2>
     </div>
   );
 }
