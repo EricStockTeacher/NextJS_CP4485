@@ -1,7 +1,9 @@
 import Image from "next/image";
 
-export default function Home() {
+import {connectToDB} from '@/app/api/db'
 
+export default function Home() {
+  connectToDB()
   const first = "Eric";
   const last = "Stock";
   return (
