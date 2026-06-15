@@ -1,35 +1,26 @@
 import {movies} from '@/lib/movies'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import {connectToDB} from '@/app/api/db'
 
 
 export default function Page() {
-    async function submitForm(formData) {
+    /*async function submitForm(formData) {
         "use server"
-        const formFields = {
-            title: formData.get("title"),
-            year: formData.get("year"),
-        }
-
-        let maxId = -1;
-        movies.forEach( movie => { if( movie.id > maxId) maxId = movie.id})
-
-        console.log("Form Data", formFields)
-
-        movies.push( {id: (maxId+1), title: formFields.title, year: formFields.year} )
+        
+        const {db} = await connectToDB();
+        await db.collection('movies').insertOne( { title: formData.get("title"), year: formData.get("year")})
+        
+        //movies.push( {id: (maxId+1), title: formFields.title, year: formFields.year} )
         //movies.push( {title: formFields.title, year: formFields.year} )
 
         revalidatePath('/movies')
 
         redirect('/movies');
-    }
-
-
-
-
+    }*/
     return (
         <main className="mx-auto mt-10 w-full max-w-md px-4">
-            <form action={submitForm} className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <form action={'/api/addmovie'} method="POST" className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <h1 className="text-xl font-semibold text-gray-900">Add Movie</h1>
 
                 <div className="space-y-2">
