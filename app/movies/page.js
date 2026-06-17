@@ -1,8 +1,9 @@
 import {connectToDB} from '@/app/api/db'
 import { ObjectId } from 'mongodb';
 import { revalidatePath } from 'next/cache'
+import GenreSelect from '@/app/components/GenreSelect.js'
 
-export default async function Page() {
+export default async function Page({searchParams}) {
     async function deleteMovie(formData) {
             "use server"
             const {db} = await connectToDB();
@@ -11,16 +12,43 @@ export default async function Page() {
     }
 
     const {db} = await connectToDB();
-    
-    let movies = await db.collection('movies').find({}).toArray();
-    console.log(movies);
+    const genre = (await searchParams)?.genre;
+
+    const filter = genre ? {"genre":genre} :  {}
+
+    //let movies = await db.collection('movies').find(filter).toArray();
+   console.log(genre);
+    let movies = await db.collection('movies').aggregate(
+         [{
+            $match: filter
+        },
+        {
+            $lookup: {
+                from: "directors",
+                localField: "directorId",
+                foreignField: "_id",
+                as: "directorInfo"
+            }
+        },
+        {
+            $unwind: 
+            {
+                path: "$directorInfo",
+                preserveNullAndEmptyArrays: true
+            }
+        }
+    ]).toArray();
+
 
     return (
         <>
+            <GenreSelect selected={genre}></GenreSelect>
             {movies.map( (movie) => {
                 return <div key={movie._id}>
                         <h3>Name: {movie.title}</h3>
                         <p>Year: {movie.year}</p>
+                        <p>Director: {movie.directorInfo.name}</p>
+                        <p>Director Rating: {movie.directorInfo.rating}</p>
                         <form action={deleteMovie}>
                             <input type="hidden" name="id" value={movie._id.toString()}/>
                             <button type="submit">Delete</button>

@@ -30,12 +30,46 @@ use('entertainment');
 )*/
 
 
-const cursor = db.getCollection('movies').find()
+/*const cursor = db.getCollection('movies').find();
 //const movies = db.getCollection('movies').find({}).toArray()
 
 for( const movie of cursor ) {
     console.log(movie);
 }
+
+const directorCursor = db.getCollection('directors').find();
+//const movies = db.getCollection('movies').find({}).toArray()
+
+for( const director of directorCursor ) {
+    console.log(director);
+}*/
+
+
+const movies = db.getCollection('movies').aggregate(
+  [{
+    $match: {
+      genre: "sci-fi"
+    }
+  },
+  {
+    $lookup: {
+      from: "directors",
+      localField: "directorId",
+      foreignField: "_id",
+      as: "directorInfo"
+      }
+  },
+  {
+    $unwind: 
+    {
+      path: "$directorInfo",
+      preserveNullAndEmptyArrays: true
+    }
+  }
+]
+).toArray()
+
+console.log(movies);
 
 
 //console.log(movies)
