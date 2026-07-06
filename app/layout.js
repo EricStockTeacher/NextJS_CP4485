@@ -1,8 +1,20 @@
 import "./globals.css";
 import Link from "next/link"
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  async function logout() {
+    'use server'
+    const cookieStore = await cookies()
+    cookieStore.delete('session')
+    redirect('/login')
+  }
+
+  const cookieStore = await cookies()
+  const session = cookieStore.get('session')
+
   return (
     <html
       lang="en"
@@ -12,7 +24,11 @@ export default function RootLayout({ children }) {
         <Link href={"/"} className="font-semibold text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
         <Link href={"/play"} className="font-semibold text-gray-700 hover:text-blue-600 transition-colors">Play</Link>
         <Link href={"/contact"} className="font-semibold text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
+        {session && <form action ={logout}>
+          <button type="submit" className="font-semibold text-gray-700 hover:text-blue-600 transition-colors">Logout</button>
+        </form>}
       </nav>
+      
       <main className="flex-1 flex flex-col items-center px-4 py-10 w-full max-w-2xl mx-auto">
         {children}
       </main>
