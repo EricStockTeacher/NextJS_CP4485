@@ -4,13 +4,19 @@ import { redirect } from 'next/navigation'
 import { SignJWT } from 'jose';
 
 import { connectToDB } from '../api/db';
+import { getGoogleOauthUrl } from '@/googleOauthUtils';
  
 
 export default async function LoginPage() {
     async function login(formData) {
         "use server"
+
+        const redirectURL = getGoogleOauthUrl();
+        //console.log(redirectURL);
+        redirect(redirectURL);
+
         
-        const username = formData.get('username');
+        /*const username = formData.get('username');
 
         const {db} = await connectToDB();
 
@@ -36,15 +42,14 @@ export default async function LoginPage() {
 
         cookieStore.set('session', jwt, {  httpOnly: true })
 
-        redirect('/movies')
+        redirect('/movies')*/
     }
 
     return (
         <>
             <h2>Login</h2>
             <form action={login}>
-                <input name="username" placeholder="username"/>
-                <button type="submit">Login</button>
+                <button type="submit">Login with Google</button>
             </form>
         </>
     )
