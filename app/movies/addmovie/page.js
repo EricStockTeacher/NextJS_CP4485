@@ -4,20 +4,11 @@ import { redirect } from 'next/navigation'
 import {connectToDB} from '@/app/api/db'
 
 
-export default function Page() {
-    /*async function submitForm(formData) {
-        "use server"
-        
-        const {db} = await connectToDB();
-        await db.collection('movies').insertOne( { title: formData.get("title"), year: formData.get("year")})
-        
-        //movies.push( {id: (maxId+1), title: formFields.title, year: formFields.year} )
-        //movies.push( {title: formFields.title, year: formFields.year} )
+export default async function Page() {
+    const {db} = await connectToDB();
 
-        revalidatePath('/movies')
+    const directors = await db.collection('directors').find({}).toArray();
 
-        redirect('/movies');
-    }*/
     return (
         <main className="mx-auto mt-10 w-full max-w-md px-4">
             <form action={'/api/addmovie'} method="POST" className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -39,6 +30,28 @@ export default function Page() {
                         id="year"
                         className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                     />
+                </div>
+
+                <div className="space-y-2">
+                    <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre</label>
+                    <select name="genre" id="genre">
+                        <option value="kids">Kids</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                        <option value="romance">Romance</option>
+                    </select>
+                </div>
+
+                <div className="space-y-2">
+                    <label htmlFor="directorId" className="block text-sm font-medium text-gray-700">Director</label>
+                    <select name="directorId" id="directorId">
+                        {
+                            directors.map( (director) => (
+                                <option value={director._id.toString()}>
+                                    {director.name}
+                                </option>
+                            ))
+                        }
+                    </select>
                 </div>
 
                 <button

@@ -3,6 +3,9 @@ import { ObjectId } from 'mongodb';
 import { revalidatePath } from 'next/cache'
 import GenreSelect from '@/app/components/GenreSelect.js'
 
+import { jwtVerify } from 'jose';
+import { cookies } from 'next/headers'
+
 export default async function Page({searchParams}) {
     async function deleteMovie(formData) {
             "use server"
@@ -11,10 +14,17 @@ export default async function Page({searchParams}) {
             revalidatePath('/movies')
     }
 
+    const cookieStore = await cookies()
+    const session = cookieStore.get('session')
+    const secret = new TextEncoder().encode(
+            process.env.JWT_SECRET)
+    
+    const {payload} = await jwtVerify(session.value, secret)
+    
     const {db} = await connectToDB();
     const genre = (await searchParams)?.genre;
 
-    const filter = genre ? {"genre":genre} :  {}
+    const filter = genre ? {"userId": new ObjectId(payload.userId), "genre":genre} :  {"userId": new ObjectId(payload.userId)}
 
     //let movies = await db.collection('movies').find(filter).toArray();
    console.log(genre);

@@ -7,7 +7,7 @@ export async function proxy(request) {
     const session = request.cookies.get('session')?.value;
     console.log(session)
     const secret = new TextEncoder().encode(
-            'ericstock')
+            process.env.JWT_SECRET)
 
     try {
         await jwtVerify(session, secret)
