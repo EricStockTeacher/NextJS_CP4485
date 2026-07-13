@@ -19,11 +19,10 @@ export async function POST(request) {
         ({payload} = await jwtVerify(session.value, secret))
     }
     catch {
-        console.log("issue with jwt, redirecting to login")
+        console.log("issue with jwt api, redirecting to login")
         return Response.json({error: 'Unauthorized'}, {status: 401})
     }
-
-
+    
 
     const {db} = await connectToDB();
     

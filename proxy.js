@@ -5,7 +5,6 @@ import { jwtVerify } from 'jose';
 // This function can be marked `async` if using `await` inside
 export async function proxy(request) {
     const session = request.cookies.get('session')?.value;
-    console.log(session)
     const secret = new TextEncoder().encode(
             process.env.JWT_SECRET)
 
@@ -13,7 +12,7 @@ export async function proxy(request) {
         await jwtVerify(session, secret)
     }
     catch {
-        console.log("issue with jwt, redirecting to login")
+        console.log("issue with jwt proxy, redirecting to login")
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
