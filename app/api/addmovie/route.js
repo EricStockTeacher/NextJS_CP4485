@@ -1,8 +1,6 @@
 
 import {connectToDB} from '@/app/api/db';
-import {revalidatePath} from 'next/cache'
 import { ObjectId } from 'mongodb';
-import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers'
 
@@ -39,7 +37,5 @@ export async function POST(request) {
         userId: new ObjectId(payload.userId)
     })
 
-    revalidatePath('/movies');
-
-    return Response.redirect(new URL('/movies', request.url), 303);
+    return Response.json({"success": true});
 }
