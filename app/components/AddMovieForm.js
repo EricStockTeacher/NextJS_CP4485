@@ -1,25 +1,7 @@
-"use client"
-import { useRouter} from 'next/navigation';
-
-export default function AddMovieForm({ directors}) {
+export default function AddMovieForm({ action, directors}) {
      
-    const router = useRouter();
-
-    async function handleSubmit(e) {
-            e.preventDefault();
-            const formData = new FormData(e.target)
-    
-            const result = await fetch('/api/addmovie', {
-                method: 'POST',
-                body: formData,
-            });
-    
-            if( result.ok) {
-                router.push('/movies');
-            }
-        }
     return (
-        <form onSubmit={handleSubmit} method="POST" className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <form action={action} method="POST" className="space-y-5 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <h1 className="text-xl font-semibold text-gray-900">Add Movie</h1>
 
                 <div className="space-y-2">
