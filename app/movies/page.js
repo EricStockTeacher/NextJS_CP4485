@@ -5,6 +5,7 @@ import GenreSelect from '@/app/components/GenreSelect.js'
 
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers'
+import  RecommendButton  from '@/app/components/RecommendButton.js'
 
 export default async function Page({searchParams}) {
     async function deleteMovie(formData) {
@@ -66,7 +67,9 @@ export default async function Page({searchParams}) {
                         <a href={`/movies/edit/${movie._id.toString()}`}>Edit</a>
                     </div>
             })
+
             }
+            <RecommendButton></RecommendButton>
         </>
     )
 }
