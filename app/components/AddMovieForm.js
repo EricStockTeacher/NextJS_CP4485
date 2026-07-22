@@ -23,6 +23,17 @@ export default function AddMovieForm({ action, directors}) {
                 </div>
 
                 <div className="space-y-2">
+                    <label htmlFor="rating" className="block text-sm font-medium text-gray-700">Rating</label>
+                    <select name="rating" id="rating">
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+
+                <div className="space-y-2">
                     <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre</label>
                     <select name="genre" id="genre">
                         <option value="kids">Kids</option>

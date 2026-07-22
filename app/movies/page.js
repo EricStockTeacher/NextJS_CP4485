@@ -58,6 +58,7 @@ export default async function Page({searchParams}) {
                 return <div key={movie._id}>
                         <h3>Name: {movie.title}</h3>
                         <p>Year: {movie.year}</p>
+                        <p>Rating: {movie.rating}</p>
                         <p>Director: {movie.directorInfo.name}</p>
                         <p>Director Rating: {movie.directorInfo.rating}</p>
                         <form action={deleteMovie}>

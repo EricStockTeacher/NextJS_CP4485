@@ -27,7 +27,7 @@ export async function POST(request) {
     const movieList = await db.collection('movies').find( {userId: new ObjectId(userId)}).toArray();
     //console.log(movieList);
 
-    const cleanedMovies = movieList.map( (movie) => ({"title": movie.title}));
+    const cleanedMovies = movieList.map( (movie) => ({"title": movie.title, "rating": movie.rating}));
 
     //console.log(cleanedMovies);
 
@@ -45,8 +45,9 @@ export async function POST(request) {
 
         You are a movie recommendation assistant.
 
-        Based on the user's viewing history, recommend five movies they have
-        not already watched.
+        Based on the user's movie collection and their rating for each movie, recommend five movies they have
+        not already watched.  A rating of 1 or 2 is a movie the user didn't like.  
+        A rating of 3 shows the user found the movie mediocre and a rating of 4 or 5 means the user loved the move
 
         Return one valid JSON object using exactly this structure:
 

@@ -33,6 +33,7 @@ export default async function Page() {
         await db.collection('movies').insertOne( { 
             title: formData.get("title"), 
             year: formData.get("year"),
+            rating: formData.get("rating"),
             genre: formData.get("genre"),
             directorId: new ObjectId(formData.get("directorId")),
             userId: new ObjectId(payload.userId)
